@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>entry</title>
+    <style>
+        body {
+            direction: rtl;
+            background-color: black;
+        }
+
+        section {
+            /* text-align: center; */
+            display: flex;
+            flex-direction: column;
+            padding: 5%;
+            border: 5px solid plum;
+            width: 15%;
+            margin: auto;
+            margin-top: 10%;
+            color: plum;
+        }
+
+        .entry {
+            flex: 1;
+            padding: 5px;
+        }
+
+        input {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="entry">
+            <label for="userName">שם</label>
+            <input type="text" id="myName" name="userName">
+        </div>
+        <div class="entry">
+            <label for="pass">סיסמא</label>
+            <input type="password" id="myPassword" name="pass">
+        </div>
+        <div class="entry">
+            <button class="btn">log in</button>
+        </div>
+    </section>
+    <!-- <div id="announce"></div> -->
+    <script>
+        let users = [];
+        let points = 100;
+        localStorage.setItem('countWin', points);
+        const userName = document.querySelector('#myName');
+        const password = document.querySelector('#myPassword');
+        const btn = document.querySelector('.btn');
+        const section = document.querySelector('section');
+        const image = document.createElement('img');
+        image.src = 'images/other/welcome.gif'
+        // const div = document.querySelector('#announce');
+        btn.addEventListener('click', chackUser);
+        function chackUser() {
+            let content = localStorage.getItem('gameUsers');
+            if (content != null) {
+                users = JSON.parse(content);
+                let name = userName.value;
+                let pass = password.value;
+                let i = 0;
+                for (; i < users.length && users[i].name != name && users[i].password != pass; i++);
+                if (i != users.length) {
+                    section.innerHTML = 'ברוך שובך!!!';
+                    welcome();
+                }
+                else
+                    addNewUser();
+            }
+            else
+                addNewUser();
+        }
+        function addNewUser() {
+            let user = {
+                name: userName.value,
+                password: password.value
+            }
+            users.push(user);
+            localStorage.setItem('gameUsers', JSON.stringify(users));
+            section.innerHTML = 'ברוך הבא!!!';
+            welcome();
+        }
+        function welcome() {
+            userName.remove();
+            btn.remove();
+            password.remove();
+            section.appendChild(image);
+            setTimeout(toTheGame, 4000);
+        }
+        function toTheGame() {
+            if (window.open('stoper.html'))
+                window.close('entry.html');
+
+        }
+    </script>
+</body>
+
+</html>

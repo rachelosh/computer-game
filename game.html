@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>game</title>
+    <style>
+        body {
+            background-color: black;
+        }
+
+        section {
+            display: flex;
+        }
+
+        .runImages {
+            flex: 1;
+            /* width: 25%; */
+            border: 5px solid rgb(235, 46, 235);
+            margin: 5%;
+            height: 300px;
+            text-align: center;
+            background-color: rgb(255, 244, 119);
+        }
+
+        .runImages img {
+            margin: auto;
+            padding: 10%;
+        }
+
+        footer {
+            width: 30%;
+            margin: auto;
+        }
+
+        #thePoints {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 10px solid rgb(235, 46, 235);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="runImages">
+            <img src="" alt="image1" id="image1">
+            <div class="result"></div>
+        </div>
+        <div class="runImages">
+            <img src="" alt="image2" id="image2">
+            <div class="result"></div>
+        </div>
+        <div class="runImages">
+            <img src="" alt="image3" id="image3">
+            <div class="result"></div>
+        </div>
+
+    </section>
+    <footer>
+        <div id="thePoints"></div>
+    </footer>
+    <audio src=""></audio>
+    <script>
+        const runImages = document.querySelectorAll('.runImages');
+        const image1 = document.querySelector('#image1');
+        const image2 = document.querySelector('#image2');
+        const image3 = document.querySelector('#image3');
+        const result = document.querySelectorAll('.result');
+        const image = document.createElement('img');
+        const section = document.querySelector('section');
+        const userPoints = document.querySelector('#thePoints');
+        let userVisage = [];
+        let sumImage = 0, element = "", rnd = 0, ind = 0, run = null, srcElement = "", flag = true;
+        let content = localStorage.getItem('theImage');
+        let visage = JSON.parse(content);
+        content = localStorage.getItem('countWin');
+        if (content != null)
+            points = parseInt(content);
+        userPoints.innerHTML = points;
+        start();
+        function start() {
+            switch (ind) {
+                case 0:
+                    sumImage = 30;
+                    element = 'hat';
+                    srcElement = visage.hat;
+                    break;
+                case 1:
+                    sumImage = 41;
+                    element = 'eyes';
+                    srcElement = visage.eyes;
+                    break;
+                case 2:
+                    sumImage = 29;
+                    element = 'mouth';
+                    srcElement = visage.mouth;
+                    break;
+                case 3:
+                    sumImage = 24;
+                    element = 'hands';
+                    srcElement = visage.hands;
+            }
+            rnd = Math.floor(Math.random() * sumImage) + 1;
+            image1.src = `images/${element}/${element}${rnd}.png`;
+            rnd = Math.floor(Math.random() * sumImage) + 1;
+            image2.src = `images/${element}/${element}${rnd}.png`;
+            rnd = Math.floor(Math.random() * sumImage) + 1;
+            image3.src = `images/${element}/${element}${rnd}.png`;
+            run = setInterval(changeImages, 1000);
+            flag = true;
+            running();
+        }
+        function running() {
+            for (let j = 0; j < 3; j++) {
+                runImages[j].addEventListener('click', () => {
+                    if (flag)
+                        check(j);
+                })
+            }
+        }
+        function check(j) {
+            flag = false;
+            clearInterval(run);
+            if ((eval('image' + (j + 1))).src == srcElement) {
+                points += 50;
+                result[j].innerHTML = 'good!! well done!!!!';
+                image.src = 'images/other/happy.png';
+                result[j].appendChild(image);
+            }
+            else {
+                points -= 40;
+                result[j].innerHTML = 'we are sorry,maybe nother time.';
+                image.src = 'images/other/sed.png';
+                result[j].appendChild(image);
+                if (points < 0) {
+                    if (window.open('gameOver.html'))
+                        window.close('game.html');
+                }
+            }
+            userPoints.innerHTML = points;
+            userVisage.push((eval('image' + (j + 1))).src);
+            setTimeout(() => {
+                result[j].innerHTML = '';
+                continueRun();
+            }, 4000);
+        }
+        function continueRun() {
+            ind++;
+            if (ind < 4)
+                start();
+            else {
+                localStorage.setItem('userImage', JSON.stringify(userVisage));
+                localStorage.setItem('countWin', points.toString());
+                if (window.open('end.html'))
+                    window.close('game.html');
+            }
+        }
+        function changeImages() {
+            rnd = Math.floor(Math.random() * sumImage) + 1;
+            image1.src = `images/${element}/${element}${rnd}.png`;
+            rnd = Math.floor(Math.random() * sumImage) + 1;
+            image2.src = `images/${element}/${element}${rnd}.png`;
+            rnd = Math.floor(Math.random() * sumImage) + 1;
+            image3.src = `images/${element}/${element}${rnd}.png`;
+        }
+    </script>
+
+</body>
+
+</html>

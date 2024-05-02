@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>start</title>
+    <style>
+        body {
+            background-color: black;
+        }
+
+        nav {
+            display: flex;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+        }
+
+        aside {
+            font-size: 300px;
+            color: #1573e5;
+        }
+
+        aside,
+        section {
+            text-align: center;
+            flex: 1;
+            padding: 10%;
+            margin: auto;
+        }
+
+        .face {
+            border-radius: 60%;
+            background-color: rgb(255, 244, 119);
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            padding-top: 10%;
+            padding-bottom: 10%;
+            margin: auto;
+            width: 80%;
+        }
+
+        #eyes,
+        #mouth {
+            margin: auto;
+        }
+
+        #mouth {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Look at the face below, remember all the details well!</h1>
+    <nav>
+        <section>
+            <img src="" alt="hat" id="hat">
+            <div class="face">
+                <img src="" alt="eyes" id="eyes">
+                <img src="" alt="mouth" id="mouth">
+            </div>
+            <img src="" alt="hands" id="hands">
+        </section>
+        <aside></aside>
+        <audio src="game.mp3" autoplay></audio>
+    </nav>
+</body>
+<script>
+    const hat = document.querySelector('#hat');
+    const face = document.querySelector('.face');
+    const eyes = document.querySelector('#eyes');
+    const mouth = document.querySelector('#mouth');
+    const hands = document.querySelector('#hands');
+    const aside = document.querySelector('aside');
+    let rnd = Math.floor(Math.random() * 30) + 1;
+    hat.src = `images/hat/hat${rnd}.png`;
+    rnd = Math.floor(Math.random() * 42) + 1;
+    eyes.src = `images/eyes/eyes${rnd}.png`;
+    rnd = Math.floor(Math.random() * 29) + 1;
+    mouth.src = `images/mouth/mouth${rnd}.png`;
+    rnd = Math.floor(Math.random() * 24) + 1;
+    hands.src = `images/hands/hands${rnd}.png`;
+    let visage = {
+        hat: hat.src,
+        eyes: eyes.src,
+        mouth: mouth.src,
+        hands: hands.src
+    }
+    localStorage.setItem('theImage', JSON.stringify(visage));
+    let cnt = 10;
+    let stoper = setInterval(count, 1000);
+    function count() {
+        aside.innerText = `${cnt--}`;
+        if (cnt < 0) {
+            setTimeout(toTheGame, 2000);
+            clearInterval(stoper);
+        }
+    }
+    function toTheGame() {
+        if (window.open('game.html'))
+            window.close('stoper.html');
+    }
+</script>
+
+</html>
